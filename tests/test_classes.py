@@ -1,7 +1,8 @@
 """Test classes."""
 
-import cartola_draft as draft
+import pytest
 
+import cartola_draft as draft
 from . import helper
 
 
@@ -64,3 +65,15 @@ class TestLineUp:
             players_test = {play.id for pos in players.values() for play in pos}
             players_prop = {play.id for play in line_up.players}
             assert players_prop == players_test
+
+    @staticmethod
+    def test_does_not_follow_scheme():
+        """Assert that it raises when the scheme is wrong."""
+        scheme1 = helper.SCHEMES_COUNTING[442]
+        scheme2 = helper.SCHEMES_COUNTING[352]
+        # Construct a dict with the position name and a list of random players.
+        players = helper.get_random_players_by_scheme(scheme1)
+
+        # Create line up object.
+        with pytest.raises(draft.exceptions.LineUpSchemeError):
+            draft.LineUp(scheme=draft.Scheme(*scheme2), **players)

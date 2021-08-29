@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import Collection, Tuple
 
+from . import exceptions
+
 
 @dataclass
 class Player:
@@ -38,6 +40,18 @@ class LineUp:
     midfielders: Collection[Player]
     forwards: Collection[Player]
     coaches: Collection[Player]
+
+    def __post_init__(self):
+        does_not_follow_scheme = (
+            len(self.goalkeepers) != self.scheme.goalkeepers,
+            len(self.fullbacks) != self.scheme.fullbacks,
+            len(self.defenders) != self.scheme.defenders,
+            len(self.midfielders) != self.scheme.midfielders,
+            len(self.forwards) != self.scheme.forwards,
+            len(self.coaches) != self.scheme.coaches,
+        )
+        if any(does_not_follow_scheme):
+            raise exceptions.LineUpSchemeError("Line-up does not follow the scheme.")
 
     @property
     def players(self) -> Tuple[Player]:
