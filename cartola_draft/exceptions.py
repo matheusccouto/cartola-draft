@@ -1,4 +1,5 @@
 """Custom execeptions for Cartola FC Draft."""
 
-class LineUpSchemeError(Exception):
+
+class SchemeError(Exception):
     """Indicates that the Line-up does not follow the scheme."""

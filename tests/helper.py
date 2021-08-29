@@ -10,15 +10,6 @@ import cartola_draft as draft
 THIS_FOLDER = os.path.dirname(__file__)
 PLAYERS_JSON_PATH = os.path.join(THIS_FOLDER, "data", "players.json")
 
-INT2POS = {
-    1: "goalkeepers",
-    2: "fullbacks",
-    3: "defenders",
-    4: "midfielders",
-    5: "forwards",
-    6: "coaches",
-}
-
 SCHEMES_COUNTING = {
     442: {1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 1},
     352: {1: 1, 2: 0, 3: 3, 4: 5, 5: 2, 6: 1},
@@ -26,7 +17,7 @@ SCHEMES_COUNTING = {
 }
 
 
-def load_players() -> Dict[int, draft.Player]:
+def load_players() -> Dict[int, List[draft.Player]]:
     """Create line-up players."""
     # Load players data from JSON folder.
     with open(PLAYERS_JSON_PATH, mode="r", encoding="utf-8") as file:
@@ -44,9 +35,10 @@ def get_random_players(amount: int, position: int) -> List[draft.Player]:
     return [random.choice(load_players()[position]) for _ in range(amount)]
 
 
-def get_random_players_by_scheme(scheme: Dict[int, int]) -> Dict[str, draft.Player]:
-    """Construct a dict with the position name and a list of random players."""
-    return {
-        INT2POS[key]: get_random_players(amount=val, position=key)
-        for key, val in scheme.items()
-    }
+def get_random_players_with_scheme(scheme: draft.Scheme) -> List[draft.Player]:
+    """Construct a list random players following a scheme."""
+    return [
+        player
+        for key, val in scheme.positions.items()
+        for player in get_random_players(val, key)
+    ]
