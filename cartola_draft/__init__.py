@@ -36,16 +36,10 @@ class LineUp:
     scheme: Scheme
     players: List[Player]
 
-    def __post_init__(self):
-        self.players = list(self.players)
-
     @property
     def players_by_position(self) -> Dict[int, List[Player]]:
         """Get line-up players by position."""
-        return {
-            i: [player for player in self.players if player.position == i]
-            for i in range(1, 7)
-        }
+        return {i: [p for p in self.players if p.position == i] for i in range(1, 7)}
 
     @property
     def points(self):
@@ -68,10 +62,10 @@ class LineUp:
 
     def is_valid(self):
         """Check if it follows the scheme."""
-        follow_scheme = (
+        valid = (
             len(self.players_by_position[i]) == self.scheme[i] for i in range(1, 7)
         )
-        return all(follow_scheme)
+        return all(valid)
 
     def missing(self, position: int) -> bool:
         """Check if line-up still missing players from a certain position."""
