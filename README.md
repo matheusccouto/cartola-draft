@@ -1,2 +1,2 @@
-# cartola-squad-selector
-Cartola FC squad selection algorithms.
+# cartola-draft
+Cartola FC line-up draft algorithms.
