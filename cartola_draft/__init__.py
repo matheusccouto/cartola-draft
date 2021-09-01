@@ -15,11 +15,8 @@ class Player:
     club: int
 
     def __iter__(self):
-        yield 'id', self.id
-        yield 'position', self.position
-        yield 'price', self.price
-        yield 'points', self.points
-        yield 'club', self.club
+        for key, val in vars(self).items():
+            yield key, val
 
 
 @dataclass
@@ -42,6 +39,10 @@ class LineUp:
 
     scheme: Scheme
     players: List[Player]
+
+    def __iter__(self):
+        for player in sorted(self.players, key=lambda player: player.position):
+            yield dict(player)
 
     @property
     def players_by_position(self) -> Dict[int, List[Player]]:

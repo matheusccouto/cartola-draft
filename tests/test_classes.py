@@ -125,6 +125,21 @@ class TestLineUp:
             else:
                 assert not missing
 
+    def test_list(self):
+        """Test converting to a list."""
+        # Construct a dict with the position name and a list of random players.
+        players = helper.get_random_players_with_scheme(self.schemes[442])
+
+        # Create line up object and check if it valid.
+        line_up = draft.LineUp(self.schemes[442], players)
+        # Convert to list
+        line_up_list = list(line_up)
+        # Make sure convertion was good.
+        assert isinstance(line_up_list, list)
+        # Check if inner objects are dict.
+        for obj in line_up_list:
+            assert isinstance(obj, dict)
+
 
 class TestScheme:
     """Test Scheme class."""
