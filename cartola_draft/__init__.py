@@ -14,6 +14,13 @@ class Player:
     points: float
     club: int
 
+    def __iter__(self):
+        yield 'id', self.id
+        yield 'position', self.position
+        yield 'price', self.price
+        yield 'points', self.points
+        yield 'club', self.club
+
 
 @dataclass
 class Scheme:

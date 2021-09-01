@@ -142,7 +142,7 @@ class TestScheme:
         for args in args_list:
             scheme = draft.Scheme(args)
             assert scheme.is_valid()
-    
+
     @staticmethod
     def test_is_valid():
         """Test is not valid method."""
@@ -155,3 +155,14 @@ class TestScheme:
         for args in args_list:
             scheme = draft.Scheme(args)
             assert not scheme.is_valid()
+
+
+class TestPlayer:
+    """Test Player class."""
+
+    @staticmethod
+    def test_dict():
+        """Test converting to dict."""
+        args = dict(id=1, position=2, price=3, points=4, club=5)
+        player = draft.Player(**args)
+        assert dict(player) == args
