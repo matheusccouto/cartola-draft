@@ -9,12 +9,12 @@ class Greedy:
     """Greedy algorithm."""
 
     def __init__(self, players: Collection[Player]):
-        self.players = sorted(players, key=Player.points, reverse=True)
+        self._players = sorted(players, key=lambda player: player.points, reverse=True)
 
     def draft(self, scheme: Scheme) -> LineUp:
         """Draft players following an specified scheme."""
         # Make a copy.
-        players = list(self.players)
+        players = list(self._players)
 
         # Create line-up without any player.
         line_up = LineUp(scheme=scheme, players=[])

@@ -17,22 +17,28 @@ SCHEMES_COUNTING = {
 }
 
 
-def load_players() -> Dict[int, List[draft.Player]]:
+def load_players() -> List[draft.Player]:
     """Create line-up players."""
     # Load players data from JSON folder.
     with open(PLAYERS_JSON_PATH, mode="r", encoding="utf-8") as file:
         players = json.load(file)
+    return [draft.Player(**player) for player in players]
 
+
+def load_players_by_position() -> Dict[int, List[draft.Player]]:
+    """Create line-up players."""
+    # Load players.
+    players = load_players()
     # Separate players by position.
     return {
-        i: [draft.Player(**play) for play in players if play["position"] == i]
+        i: [player for player in players if player.position == i]
         for i in range(1, 7, 1)
     }
 
 
 def get_random_players(amount: int, position: int) -> List[draft.Player]:
     """Get some random players."""
-    return [random.choice(load_players()[position]) for _ in range(amount)]
+    return [random.choice(load_players_by_position()[position]) for _ in range(amount)]
 
 
 def get_random_players_with_scheme(scheme: draft.Scheme) -> List[draft.Player]:
