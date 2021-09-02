@@ -16,13 +16,24 @@ SCHEMES_COUNTING = {
     541: {1: 1, 2: 2, 3: 3, 4: 4, 5: 1, 6: 1},
 }
 
+INVALID_SCHEMES_COUNTING = {
+    442: {1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 0},  # No coach
+    362: {1: 1, 2: 0, 3: 3, 4: 6, 5: 2, 6: 1},  # Too many midfielders
+    541: {1: 0, 2: 2, 3: 2, 4: 5, 5: 1, 6: 1},  # No goalkeeper
+    542: {1: 1, 2: 2, 3: 3, 4: 4, 5: 2, 6: 1},  # Too many players
+}
+
+
+def load_players_dict() -> List[Dict[str, int]]:
+    """Create line-up players dict."""
+    # Load players data from JSON folder.
+    with open(PLAYERS_JSON_PATH, mode="r", encoding="utf-8") as file:
+        return json.load(file)
+
 
 def load_players() -> List[draft.Player]:
     """Create line-up players."""
-    # Load players data from JSON folder.
-    with open(PLAYERS_JSON_PATH, mode="r", encoding="utf-8") as file:
-        players = json.load(file)
-    return [draft.Player(**player) for player in players]
+    return [draft.Player(**player) for player in load_players_dict()]
 
 
 def load_players_by_position() -> Dict[int, List[draft.Player]]:

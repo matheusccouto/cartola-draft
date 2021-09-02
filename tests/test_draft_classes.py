@@ -147,27 +147,14 @@ class TestScheme:
     @staticmethod
     def test_is_valid():
         """Test is valid method."""
-        args_list = [
-            {1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 1},  # 442
-            {1: 1, 2: 0, 3: 3, 4: 5, 5: 2, 6: 1},  # 352
-            {1: 1, 2: 2, 3: 2, 4: 5, 5: 1, 6: 1},  # 451
-            {1: 1, 2: 2, 3: 3, 4: 3, 5: 2, 6: 1},  # 532
-            {1: 1, 2: 2, 3: 3, 4: 4, 5: 1, 6: 1},  # 541
-        ]
-        for args in args_list:
+        for args in helper.SCHEMES_COUNTING.values():
             scheme = draft.Scheme(args)
             assert scheme.is_valid()
 
     @staticmethod
-    def test_is_valid():
+    def test_is_not_valid():
         """Test is not valid method."""
-        args_list = [
-            {1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 0},  # No coach
-            {1: 1, 2: 0, 3: 3, 4: 6, 5: 2, 6: 1},  # Too many midfielders
-            {1: 0, 2: 2, 3: 2, 4: 5, 5: 1, 6: 1},  # No goalkeeper
-            {1: 1, 2: 2, 3: 3, 4: 4, 5: 2, 6: 1},  # Too many players
-        ]
-        for args in args_list:
+        for args in helper.INVALID_SCHEMES_COUNTING.values():
             scheme = draft.Scheme(args)
             assert not scheme.is_valid()
 
