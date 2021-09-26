@@ -7,7 +7,7 @@ from cartola_draft import Player, Scheme
 from cartola_draft.algorithm.greedy import Greedy
 
 
-def parse_scheme(scheme: Dict[int, int]) -> Scheme:
+def parse_scheme(scheme: Dict[str, int]) -> Scheme:
     """Parse scheme argument."""
     sch = Scheme(scheme)
     if not sch.is_valid():
@@ -29,10 +29,13 @@ def parse_players(players: List[Dict[str, float]]) -> List[Player]:
 
 def lambda_handler(event, context):  # pylint: disable=unused-argument
     """AWS lambda handler."""
+    # Load arguments
+    args = json.loads(event["body"])
+
     # Parse arguments.
-    scheme = parse_scheme(event["scheme"])
-    algo_class = parse_algorithm(event["algorithm"])
-    players = parse_players(event["players"])
+    scheme = parse_scheme(args["scheme"])
+    algo_class = parse_algorithm(args["algorithm"])
+    players = parse_players(args["players"])
 
     # Create algorithm instance.
     algo = algo_class(players)

@@ -90,21 +90,29 @@ class TestLambdaFunction:
         """General testig."""
         res = lambda_function.lambda_handler(event=event, context=context)
         # Read JSON
-        body = json.loads(res["body"])
+        res_body = json.loads(res["body"])
         # Assert that status ig good.
         assert res["statusCode"] == 200
         # Make sure the reutn has the correct length.
-        assert len(body) == 12
+        assert len(res_body) == 12
         # Make sure it has the right scheme.
-        for pos, amount in event["scheme"].items():
-            players_from_pos = [item for item in body if item["position"] == pos]
+        event_body = json.loads(event["body"])
+        for pos, amount in event_body["scheme"].items():
+            players_from_pos = [item for item in res_body if item["position"] == pos]
             assert len(players_from_pos) == amount
 
     def test_greedy(self):
         """Test draft using greedy algorithm."""
         body = {
-            "scheme": {1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 1},
+            "scheme": {
+                "goalkeeper": 1,
+                "fullback": 2,
+                "defender": 2,
+                "midfielder": 4,
+                "forward": 2,
+                "coach": 1,
+            },
             "players": helper.load_players_dict(),
             "algorithm": "greedy",
         }
-        self._test(event=body)
+        self._test(event={"body": json.dumps(body)})

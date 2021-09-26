@@ -9,7 +9,7 @@ from cartola_draft.algorithm.greedy import Greedy
 from . import helper
 
 MAX_EXEC_TIME = 0.1  # seconds
-SCHEMES = {442: Scheme({1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 1})}
+SCHEMES = {442: Scheme(helper.SCHEMES_COUNTING[442])}
 
 
 class TestTypicalDraft:

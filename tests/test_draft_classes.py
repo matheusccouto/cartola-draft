@@ -13,9 +13,9 @@ class TestLineUp:
     def setup_class(cls):
         """Setup class."""
         cls.schemes = {
-            442: draft.Scheme({1: 1, 2: 2, 3: 2, 4: 4, 5: 2, 6: 1}),
-            352: draft.Scheme({1: 1, 2: 0, 3: 3, 4: 5, 5: 2, 6: 1}),
-            541: draft.Scheme({1: 1, 2: 2, 3: 3, 4: 4, 5: 1, 6: 1}),
+            442: draft.Scheme(helper.SCHEMES_COUNTING[442]),
+            352: draft.Scheme(helper.SCHEMES_COUNTING[352]),
+            541: draft.Scheme(helper.SCHEMES_COUNTING[541]),
         }
 
     def test_points(self):
@@ -96,12 +96,12 @@ class TestLineUp:
         assert len(line_up.players) == 0
 
         # Add a random player.
-        player = helper.get_random_players(amount=1, position=1)
+        player = helper.get_random_players(amount=1, position="goalkeeper")
         line_up.add_player(player)
         assert len(line_up.players) == 1
 
         # Add another random player.
-        player = helper.get_random_players(amount=1, position=6)
+        player = helper.get_random_players(amount=1, position="coach")
         line_up.add_player(player)
         assert len(line_up.players) == 2
 
@@ -117,7 +117,7 @@ class TestLineUp:
         line_up = draft.LineUp(self.schemes[442], players)
 
         # Check if it needs only the missing position.
-        for position in range(1, 7):
+        for position in helper.POSITIONS:
             missing = line_up.missing(position)
 
             if position == dropped.position:
