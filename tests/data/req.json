@@ -1,11 +1,11 @@
 {
     "scheme": {
-        "1": 1,
-        "2": 2,
-        "3": 2,
-        "4": 4,
-        "5": 2,
-        "6": 1
+        "goalkeeper": 1,
+        "fullback": 2,
+        "defender": 2,
+        "midfielder": 4,
+        "forward": 2,
+        "coach": 1
     },
     "algorithm": "greedy",
     "players": [
