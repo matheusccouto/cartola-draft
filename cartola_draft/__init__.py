@@ -3,30 +3,29 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
+POSITIONS = ["goalkeeper", "fullback", "defender", "midfielder", "forward", "coach"]
+
 
 @dataclass
 class Player:
     """Player"""
 
     id: int
-    position: int
+    position: str
     price: float
     points: float
     club: int
 
     def __iter__(self):
-        yield 'id', self.id
-        yield 'position', self.position
-        yield 'price', self.price
-        yield 'points', self.points
-        yield 'club', self.club
+        for key, val in vars(self).items():
+            yield key, val
 
 
 @dataclass
 class Scheme:
     """Line-up scheme."""
 
-    positions: Dict[int, int]
+    positions: Dict[str, int]
 
     def __getitem__(self, val):
         return self.positions[val]
@@ -43,10 +42,17 @@ class LineUp:
     scheme: Scheme
     players: List[Player]
 
+    def __iter__(self):
+        for player in sorted(self.players, key=lambda player: player.position):
+            yield dict(player)
+
     @property
     def players_by_position(self) -> Dict[int, List[Player]]:
         """Get line-up players by position."""
-        return {i: [p for p in self.players if p.position == i] for i in range(1, 7)}
+        return {
+            pos: [player for player in self.players if player.position == pos]
+            for pos in POSITIONS
+        }
 
     @property
     def points(self):
@@ -70,7 +76,7 @@ class LineUp:
     def is_valid(self):
         """Check if it follows the scheme."""
         valid = (
-            len(self.players_by_position[i]) == self.scheme[i] for i in range(1, 7)
+            len(self.players_by_position[pos]) == self.scheme[pos] for pos in POSITIONS
         )
         return all(valid)
 
