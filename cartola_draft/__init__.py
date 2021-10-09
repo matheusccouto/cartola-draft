@@ -10,7 +10,7 @@ POSITIONS = ["goalkeeper", "fullback", "defender", "midfielder", "forward", "coa
 class Player:
     """Player"""
 
-    id: int
+    id: int  # pylint: disable=invalid-name
     position: str
     price: float
     points: float
@@ -47,7 +47,7 @@ class LineUp:
             yield dict(player)
 
     @property
-    def players_by_position(self) -> Dict[int, List[Player]]:
+    def players_by_position(self) -> Dict[str, List[Player]]:
         """Get line-up players by position."""
         return {
             pos: [player for player in self.players if player.position == pos]
@@ -80,6 +80,6 @@ class LineUp:
         )
         return all(valid)
 
-    def missing(self, position: int) -> bool:
+    def missing(self, position: str) -> bool:
         """Check if line-up still missing players from a certain position."""
         return len(self.players_by_position[position]) < self.scheme[position]

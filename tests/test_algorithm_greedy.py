@@ -38,6 +38,8 @@ class TestTypicalDraft:
 class TestExtremeCases:
     """Test exceptions."""
 
+    # pylint: disable=too-few-public-methods
+
     @staticmethod
     def test_few_players():
         """Test trying to use few players."""

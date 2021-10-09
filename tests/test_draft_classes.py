@@ -162,6 +162,8 @@ class TestScheme:
 class TestPlayer:
     """Test Player class."""
 
+    # pylint: disable=too-few-public-methods
+
     @staticmethod
     def test_dict():
         """Test converting to dict."""

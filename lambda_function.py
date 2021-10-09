@@ -1,7 +1,7 @@
 """AWS lambda function."""
 
 import json
-from typing import Callable, Dict, List
+from typing import Any, Callable, Dict, List
 
 from cartola_draft import Player, Scheme
 from cartola_draft.algorithm.greedy import Greedy
@@ -22,7 +22,7 @@ def parse_algorithm(name: str) -> Callable:
     raise ValueError(f"{name} is not a valid algorithm")
 
 
-def parse_players(players: List[Dict[str, float]]) -> List[Player]:
+def parse_players(players: List[Dict[str, Any]]) -> List[Player]:
     """Parse players argument."""
     return [Player(**player) for player in players]
 

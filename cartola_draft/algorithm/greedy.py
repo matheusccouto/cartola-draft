@@ -8,6 +8,8 @@ from .. import Player, Scheme, LineUp
 class Greedy:
     """Greedy algorithm."""
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, players: Collection[Player]):
         self._players = sorted(players, key=lambda player: player.points, reverse=True)
 

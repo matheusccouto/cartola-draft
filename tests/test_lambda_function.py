@@ -85,6 +85,8 @@ class TestPlayers:
 class TestLambdaFunction:
     """Test AWS lambda function."""
 
+    # pylint: disable=too-few-public-methods
+
     @staticmethod
     def _test(event=None, context=None):
         """General testig."""
@@ -104,14 +106,7 @@ class TestLambdaFunction:
     def test_greedy(self):
         """Test draft using greedy algorithm."""
         body = {
-            "scheme": {
-                "goalkeeper": 1,
-                "fullback": 2,
-                "defender": 2,
-                "midfielder": 4,
-                "forward": 2,
-                "coach": 1,
-            },
+            "scheme": helper.SCHEMES_COUNTING[442],
             "players": helper.load_players_dict(),
             "algorithm": "greedy",
         }

@@ -3,7 +3,7 @@
 import json
 import os
 import random
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import cartola_draft as draft
 
@@ -62,18 +62,18 @@ INVALID_SCHEMES_COUNTING = {
         "forward": 1,
         "coach": 1,
     },
-    541: {  # Too many players
-        "goalkeeper": 0,
+    542: {  # Too many players
+        "goalkeeper": 1,
         "fullback": 2,
         "defender": 3,
         "midfielder": 4,
         "forward": 1,
-        "coach": 1,
+        "coach": 2,
     },
 }
 
 
-def load_players_dict() -> List[Dict[str, int]]:
+def load_players_dict() -> List[Dict[str, Any]]:
     """Create line-up players dict."""
     # Load players data from JSON folder.
     with open(PLAYERS_JSON_PATH, mode="r", encoding="utf-8") as file:
@@ -85,7 +85,7 @@ def load_players() -> List[draft.Player]:
     return [draft.Player(**player) for player in load_players_dict()]
 
 
-def load_players_by_position() -> Dict[int, List[draft.Player]]:
+def load_players_by_position() -> Dict[str, List[draft.Player]]:
     """Create line-up players."""
     # Load players.
     players = load_players()
@@ -96,7 +96,7 @@ def load_players_by_position() -> Dict[int, List[draft.Player]]:
     }
 
 
-def get_random_players(amount: int, position: int) -> List[draft.Player]:
+def get_random_players(amount: int, position: str) -> List[draft.Player]:
     """Get some random players."""
     return [random.choice(load_players_by_position()[position]) for _ in range(amount)]
 

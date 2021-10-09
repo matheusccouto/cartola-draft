@@ -9,6 +9,8 @@ from .. import Player, Scheme, LineUp
 class BaseAlgorithm(abc.ABC):
     """Algorithm base class."""
 
+    # pylint: disable=too-few-public-methods
+
     @abc.abstractmethod
     def __init__(self, players: Collection[Player]):
         """Initializer"""
