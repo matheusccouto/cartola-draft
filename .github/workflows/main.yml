@@ -8,6 +8,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install wheel
+          pip install -r requirements.txt -r requirements-test.txt -r requirements-dev.txt
+
+      - name: Test with pytest
+        run: pytest --cov=./ --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+
+      - name: Analysing the code with pylint
+        run: pylint lambda_function.py cartola_draft tests
+      - name: Analysing the code with mypy
+        run: mypy lambda_function.py cartola_draft tests
+
+      - name: Prepare files
+        run: |
+          mkdir -p package/cartola_draft
+          cp lambda_function.py package
+          cp -r cartola_draft/* package/cartola_draft
+
       - uses: aws-actions/setup-sam@v1
       - uses: aws-actions/configure-aws-credentials@v1
         with:
