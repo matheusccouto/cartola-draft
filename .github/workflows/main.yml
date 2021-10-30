@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AZURE_FUNCTIONAPP_NAME: "palpiteiro"
+  AZURE_FUNCTIONAPP_NAME: "cartola-draft"
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
   PYTHON_VERSION: "3.8"
   PYLINT_ARGS: "function cartola_draft tests"
