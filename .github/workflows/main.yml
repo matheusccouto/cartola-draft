@@ -27,7 +27,7 @@ jobs:
       - name: Resolve development dependencies using pip
         run: |
           pip install --upgrade pip wheel
-          pip install -r requirements-dev.txt
+          pip install -r requirements-dev.txt -r requirements.txt
 
       - name: Test with pytest
         run: pytest --cov=./ --cov-report=xml
