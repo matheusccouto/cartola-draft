@@ -1,21 +1,33 @@
+name: Test, check and deploy Azure Function.
+
 on:
   push:
     branches:
       - main
+
+env:
+  AZURE_FUNCTIONAPP_NAME: "palpiteiro"
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
+  PYTHON_VERSION: "3.8"
+  PYLINT_ARGS: "function cartola_draft tests"
+  MYPY_ARGS: "function cartola_draft tests"
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v2
+      
+      - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
+        uses: actions/setup-python@v1
         with:
-          python-version: "3.8"
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install dependencies
+      - name: Resolve development dependencies using pip
         run: |
-          pip install --upgrade pip
-          pip install wheel
-          pip install -r requirements-dev.txt -r requirements.txt
+          pip install --upgrade pip wheel
+          pip install -r requirements-dev.txt
 
       - name: Test with pytest
         run: pytest --cov=./ --cov-report=xml
@@ -24,6 +36,21 @@ jobs:
         uses: codecov/codecov-action@v2
 
       - name: Analysing the code with pylint
-        run: pylint function cartola_draft tests
+        run: pylint ${{ env.PYLINT_ARGS }}
       - name: Analysing the code with mypy
-        run: mypy function cartola_draft tests
+        run: mypy ${{ env.MYPY_ARGS }}
+
+      - name: "Resolve Project Dependencies Using Pip"
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+          popd
+      - name: "Run Azure Functions Action"
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
