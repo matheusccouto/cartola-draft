@@ -15,7 +15,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install wheel
-          pip install -r requirements-dev.txt
+          pip install -r requirements-dev.txt -r requirements.txt
 
       - name: Test with pytest
         run: pytest --cov=./ --cov-report=xml
@@ -24,24 +24,6 @@ jobs:
         uses: codecov/codecov-action@v2
 
       - name: Analysing the code with pylint
-        run: pylint lambda_function.py cartola_draft tests
+        run: pylint function cartola_draft tests
       - name: Analysing the code with mypy
-        run: mypy lambda_function.py cartola_draft tests
-
-      - name: Prepare files
-        run: |
-          mkdir -p package/cartola_draft
-          cp lambda_function.py package
-          cp -r cartola_draft/* package/cartola_draft
-
-      - uses: aws-actions/setup-sam@v1
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: sa-east-1
-      # sam build 
-      - run: sam build --use-container
-
-      # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cartola-draft --s3-bucket cartola-draft --capabilities CAPABILITY_IAM --region sa-east-1
+        run: mypy function cartola_draft tests
