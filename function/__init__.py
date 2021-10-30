@@ -4,10 +4,10 @@ import json
 import logging
 from typing import Any, Callable, Dict, List
 
+import azure.functions as func
+
 from cartola_draft import Player, Scheme
 from cartola_draft.algorithm.greedy import Greedy
-
-import azure.functions as func
 
 
 def parse_scheme(scheme: Dict[str, int]) -> Scheme:

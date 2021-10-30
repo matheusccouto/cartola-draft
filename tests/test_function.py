@@ -1,6 +1,6 @@
 """Unit tests for AWS lambda function."""
 
-import json
+# import json
 
 import pytest
 
