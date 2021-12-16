@@ -2,7 +2,7 @@
 
 from typing import Collection
 
-from . import BaseAlgorithm
+from . import BaseAlgorithm, DraftError
 from .. import Player, Scheme, LineUp
 
 
@@ -35,4 +35,4 @@ class Greedy(BaseAlgorithm):
             if line_up.is_valid():
                 return line_up
 
-        raise ValueError("There are not enough players to form a line-up.")
+        raise DraftError("There are not enough players to form a line-up.")

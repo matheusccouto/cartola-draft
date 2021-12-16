@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, List
 import azure.functions as func
 
 from cartola_draft import Player, Scheme
+from cartola_draft.algorithm import DraftError
 from cartola_draft.algorithm.greedy import Greedy
 
 
@@ -54,6 +55,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     algo = algo_class(players)
 
     # Draft line-up.
-    line_up = algo.draft(price, scheme)
+    try:
+        line_up = algo.draft(price, scheme)
+    except DraftError:
+        func.HttpResponse("Oops, something went wrong while drafting.", status_code=400)
 
     return func.HttpResponse(json.dumps(line_up.players, default=vars), status_code=200)

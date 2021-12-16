@@ -5,6 +5,7 @@ import timeit
 import pytest
 
 from cartola_draft import Scheme
+from cartola_draft.algorithm import DraftError
 from cartola_draft.algorithm.greedy import Greedy
 from . import helper
 
@@ -44,5 +45,5 @@ class TestExtremeCases:
     def test_few_players():
         """Test trying to use few players."""
         algo = Greedy(helper.load_players()[:10])
-        with pytest.raises(ValueError):
+        with pytest.raises(DraftError):
             algo.draft(100, SCHEMES[442])

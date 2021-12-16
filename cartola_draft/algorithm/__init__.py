@@ -6,6 +6,10 @@ from typing import Collection, Dict, List
 from .. import Player, Scheme, LineUp
 
 
+class DraftError(Exception):
+    """Error on drating players."""
+
+
 class BaseAlgorithm(abc.ABC):
     """Algorithm base class."""
 
