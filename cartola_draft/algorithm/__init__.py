@@ -1,7 +1,7 @@
 """Cartola FC optimization algorithms."""
 
 import abc
-from typing import Collection, Dict, List
+from typing import Dict, List, Sequence
 
 from .. import Player, Scheme, LineUp
 
@@ -16,12 +16,13 @@ class BaseAlgorithm(abc.ABC):
     # pylint: disable=too-few-public-methods
 
     @abc.abstractmethod
-    def __init__(self, players: Collection[Player]):
+    def __init__(self, players: Sequence[Player]):
         """Initializer"""
+        self.players = players
 
     @staticmethod
     def _organize_players_by_position(
-        players: Collection[Player],
+        players: Sequence[Player],
     ) -> Dict[int, List[Player]]:
         """Organize players by position."""
         return {

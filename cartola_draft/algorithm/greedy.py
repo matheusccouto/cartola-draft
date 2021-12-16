@@ -1,6 +1,6 @@
 """Greedy algorithm."""
 
-from typing import Collection
+from typing import Sequence
 
 from . import BaseAlgorithm, DraftError
 from .. import Player, Scheme, LineUp
@@ -11,14 +11,14 @@ class Greedy(BaseAlgorithm):
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, players: Collection[Player]):
+    def __init__(self, players: Sequence[Player]):
         super().__init__(players)
-        self._players = sorted(players, key=lambda player: player.points, reverse=True)
+        self.players = sorted(players, key=lambda player: player.points, reverse=True)
 
     def draft(self, price: float, scheme: Scheme) -> LineUp:
         """Draft players following an specified scheme."""
         # Make a copy.
-        players = list(self._players)
+        players = list(self.players)
 
         # Create line-up without any player.
         line_up = LineUp(scheme=scheme, players=[])

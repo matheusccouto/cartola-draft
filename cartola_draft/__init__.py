@@ -73,6 +73,10 @@ class LineUp:
         """Add player to the line-up."""
         self.players.append(player)
 
+    def remove_player(self, player: Player):
+        """Remove player to the line-up."""
+        self.players.remove(player)
+
     def is_valid(self):
         """Check if it follows the scheme."""
         valid = (
@@ -83,3 +87,7 @@ class LineUp:
     def missing(self, position: str) -> bool:
         """Check if line-up still missing players from a certain position."""
         return len(self.players_by_position[position]) < self.scheme[position]
+
+    def copy(self) -> "LineUp":
+        """Copy this instance."""
+        return LineUp(scheme=self.scheme, players=self.players)
