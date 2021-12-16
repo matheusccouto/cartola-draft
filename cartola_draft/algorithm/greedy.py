@@ -2,18 +2,20 @@
 
 from typing import Collection
 
+from . import BaseAlgorithm
 from .. import Player, Scheme, LineUp
 
 
-class Greedy:
+class Greedy(BaseAlgorithm):
     """Greedy algorithm."""
 
     # pylint: disable=too-few-public-methods
 
     def __init__(self, players: Collection[Player]):
+        super().__init__(players)
         self._players = sorted(players, key=lambda player: player.points, reverse=True)
 
-    def draft(self, scheme: Scheme) -> LineUp:
+    def draft(self, price: float, scheme: Scheme) -> LineUp:
         """Draft players following an specified scheme."""
         # Make a copy.
         players = list(self._players)
@@ -25,8 +27,9 @@ class Greedy:
         for player in players:
 
             # Check if the team has room for this player.
-            if line_up.missing(player.position):
+            if line_up.missing(player.position) and player.price <= price:
                 line_up.add_player(player)
+                price -= player.price
 
             # Check if the team is ready.
             if line_up.is_valid():

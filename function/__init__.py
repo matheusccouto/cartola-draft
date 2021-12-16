@@ -30,6 +30,13 @@ def parse_players(players: List[Dict[str, Any]]) -> List[Player]:
     return [Player(**player) for player in players]
 
 
+def parse_price(price: float) -> float:
+    """Parse price."""
+    if price <= 0:
+        raise ValueError("Price should be positve")
+    return price
+
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """Azure function execution."""
     logging.info("Python HTTP trigger function processed a request.")
@@ -41,11 +48,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     scheme = parse_scheme(args["scheme"])
     algo_class = parse_algorithm(args["algorithm"])
     players = parse_players(args["players"])
+    price = parse_price(args["price"])
 
     # Create algorithm instance.
     algo = algo_class(players)
 
     # Draft line-up.
-    line_up = algo.draft(scheme)
+    line_up = algo.draft(price, scheme)
 
     return func.HttpResponse(json.dumps(line_up.players, default=vars), status_code=200)

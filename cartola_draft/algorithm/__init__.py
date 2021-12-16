@@ -26,5 +26,5 @@ class BaseAlgorithm(abc.ABC):
         }
 
     @abc.abstractmethod
-    def draft(self, scheme: Scheme) -> LineUp:
+    def draft(self, price: float, scheme: Scheme) -> LineUp:
         """Draft players following an specified scheme."""
