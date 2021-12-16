@@ -58,6 +58,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         line_up = algo.draft(price, scheme)
     except DraftError:
-        func.HttpResponse("Oops, something went wrong while drafting.", status_code=400)
+        return func.HttpResponse(
+            "Oops, something went wrong while drafting.",
+            status_code=400,
+        )
 
     return func.HttpResponse(json.dumps(line_up.players, default=vars), status_code=200)
