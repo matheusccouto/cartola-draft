@@ -98,7 +98,7 @@ class Genetic(BaseAlgorithm):
             line_up = random.choice(line_ups).copy()
 
             # Sample how many players to mutate.
-            n_mutations = round(random.triangular(0, self.max_n_mutations, 0))
+            n_mutations = round(random.triangular(1, self.max_n_mutations, 0))
             for _ in range(int(n_mutations)):
                 self._change_random_player(line_up)
 
