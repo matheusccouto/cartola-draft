@@ -15,11 +15,11 @@ class Genetic(BaseAlgorithm):
     def __init__(
         self,
         players: Sequence[Player],
-        n_generations: int,
-        n_individuals: int,
-        tournament_size: int,
-        n_tournament_winners: int,
-        max_n_mutations: int,
+        n_generations: int = 100,
+        n_individuals: int = 100,
+        tournament_size: int = 10,
+        n_tournament_winners: int = 5,
+        max_n_mutations: int = 5,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(players)
@@ -91,18 +91,12 @@ class Genetic(BaseAlgorithm):
         player = self._pop_random_player(line_up)
         line_up.add_player(random.choice(self.players_by_position[player.position]))
 
-    def _create_offsprings(
-        self,
-        line_ups: Sequence[LineUp],
-        size: int,
-        max_price: float,
-    ) -> List[LineUp]:
+    def _create_offsprings(self, line_ups: Sequence[LineUp], size: int) -> List[LineUp]:
         """Create offsprings for given line ups."""
-
         offsprings = []
         for _ in range(size):
 
-            line_up = random.choice(self._tournament(line_ups, max_price=max_price))
+            line_up = random.choice(line_ups)
             line_up = line_up.copy()
 
             # Sample how many players to mutate.
@@ -129,11 +123,7 @@ class Genetic(BaseAlgorithm):
                 [random.choice(line_ups) for _ in range(self.tournament_size)],
                 max_price=price,
             )
-            offsprings = self._create_offsprings(
-                selected,
-                size=self.n_individuals - 1,
-                max_price=price,
-            )
+            offsprings = self._create_offsprings(selected, size=self.n_individuals - 1)
 
             line_ups = [best] + offsprings
 

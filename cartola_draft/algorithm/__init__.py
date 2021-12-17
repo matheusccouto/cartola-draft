@@ -25,9 +25,10 @@ class BaseAlgorithm(abc.ABC):
         players: Sequence[Player],
     ) -> Dict[int, List[Player]]:
         """Organize players by position."""
+        positions = {player.position for player in players}
         return {
-            i: [player for player in players if player.position == i]
-            for i in range(1, 7)
+            pos: [player for player in players if player.position == pos]
+            for pos in positions
         }
 
     @abc.abstractmethod
