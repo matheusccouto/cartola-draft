@@ -10,7 +10,7 @@ from cartola_draft.algorithm import DraftError
 from cartola_draft.algorithm.genetic import Genetic
 from . import helper
 
-MAX_EXEC_TIME = 2  # seconds
+MAX_EXEC_TIME = 5  # seconds
 SCHEMES = {442: Scheme(helper.SCHEMES_COUNTING[442])}
 
 
@@ -30,7 +30,7 @@ class TestTypicalDraft:
     def test_speed(self):
         """Test if draft is fast."""
         # Time-it receive a string or a callable, so it is simpler to use lamda.
-        times = timeit.timeit(lambda: self.algo.draft(100, SCHEMES[442]), number=10)
+        times = timeit.timeit(lambda: self.algo.draft(100, SCHEMES[442]), number=5)
         assert times < MAX_EXEC_TIME * 10
 
 
