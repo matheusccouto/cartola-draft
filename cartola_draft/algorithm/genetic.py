@@ -19,7 +19,7 @@ class Genetic(BaseAlgorithm):
         n_individuals: int = 100,
         tournament_size: int = 10,
         n_tournament_winners: int = 5,
-        max_n_mutations: int = 5,
+        max_n_mutations: int = 6,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(players)
@@ -79,17 +79,15 @@ class Genetic(BaseAlgorithm):
         ranked = self._rank(random.sample(line_ups, self.tournament_size), max_price)
         return ranked[: self.n_tournament_winners]
 
-    @staticmethod
-    def _pop_random_player(line_up: LineUp) -> Player:
-        """Pop a random player from the line up"""
-        player = random.choice(line_up.players)
-        line_up.remove_player(player)
-        return player
-
     def _change_random_player(self, line_up: LineUp):
         """Change a random player from the line up."""
-        player = self._pop_random_player(line_up)
-        line_up.add_player(random.choice(self.players_by_position[player.position]))
+        i = random.randrange(len(line_up))
+        new_player = random.choice(self.players_by_position[line_up[i].position])
+
+        if new_player in line_up:
+            self._change_random_player(line_up)
+        else:
+            line_up[i] = new_player
 
     def _create_offsprings(self, line_ups: Sequence[LineUp], size: int) -> List[LineUp]:
         """Create offsprings for given line ups."""

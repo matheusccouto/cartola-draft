@@ -19,10 +19,7 @@ class TestTypicalDraft:
     @classmethod
     def setup_class(cls):
         """Setup class."""
-        # Get players.
-        players = helper.load_players()
-        # Create algorithm instance.
-        cls.algo = Greedy(players)
+        cls.algo = Greedy(helper.load_players())
 
     def test_line_up_is_valid(self):
         """Test if line up is valid.."""

@@ -3,7 +3,7 @@
 import abc
 from typing import Dict, List, Sequence
 
-from .. import Player, Scheme, LineUp
+from .. import Player, Scheme, LineUp, POSITIONS
 
 
 class DraftError(Exception):
@@ -23,12 +23,11 @@ class BaseAlgorithm(abc.ABC):
     @staticmethod
     def _organize_players_by_position(
         players: Sequence[Player],
-    ) -> Dict[int, List[Player]]:
+    ) -> Dict[str, List[Player]]:
         """Organize players by position."""
-        positions = {player.position for player in players}
         return {
             pos: [player for player in players if player.position == pos]
-            for pos in positions
+            for pos in POSITIONS
         }
 
     @abc.abstractmethod
