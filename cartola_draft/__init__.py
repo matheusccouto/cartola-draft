@@ -120,4 +120,4 @@ class LineUp:
 
     def copy(self) -> "LineUp":
         """Copy this instance."""
-        return LineUp(scheme=self.scheme, players=self.players)
+        return LineUp(scheme=self.scheme, players=list(self.players))

@@ -15,10 +15,10 @@ class Genetic(BaseAlgorithm):
     def __init__(
         self,
         players: Sequence[Player],
-        n_generations: int = 300,
-        n_individuals: int = 500,
-        tournament_size: int = 400,
-        n_tournament_winners: int = 200,
+        n_generations: int = 100,
+        n_individuals: int = 100,
+        tournament_size: int = 50,
+        n_tournament_winners: int = 25,
         max_n_mutations: int = 4,
     ):
         # pylint: disable=too-many-arguments
@@ -29,6 +29,7 @@ class Genetic(BaseAlgorithm):
         self.n_tournament_winners = n_tournament_winners
         self.max_n_mutations = max_n_mutations
         self.players_by_position = self._organize_players_by_position(self.players)
+        self.history: List[float] = []
 
     @staticmethod
     def _create_random_line_up(players: Sequence[Player], scheme: Scheme) -> LineUp:
@@ -57,7 +58,7 @@ class Genetic(BaseAlgorithm):
     def _calculate_fitness(line_up: LineUp, max_price: float) -> float:
         """Calculate fitness metric. The greater the better"""
         if line_up.price > max_price:
-            return line_up.price - max_price
+            return max_price - line_up.price
         return line_up.points
 
     def _rank(self, line_ups: Sequence[LineUp], max_price: float) -> List[LineUp]:
@@ -94,8 +95,7 @@ class Genetic(BaseAlgorithm):
         offsprings = []
         for _ in range(size):
 
-            line_up = random.choice(line_ups)
-            line_up = line_up.copy()
+            line_up = random.choice(line_ups).copy()
 
             # Sample how many players to mutate.
             n_mutations = round(random.triangular(0, self.max_n_mutations, 0))
@@ -115,14 +115,18 @@ class Genetic(BaseAlgorithm):
 
         for _ in range(self.n_generations):
 
-            best = self._rank(line_ups, max_price=price)[0]
+            ranked = self._rank(line_ups, max_price=price)
+            best = ranked[:1]
+            rest = ranked[1:]
+            self.history.append(best[0].points)
 
             selected = self._tournament(
-                [random.choice(line_ups) for _ in range(self.tournament_size)],
+                random.sample(rest, k=self.tournament_size),
                 max_price=price,
             )
             offsprings = self._create_offsprings(selected, size=self.n_individuals - 1)
+            line_ups = best + offsprings
 
-            line_ups = [best] + offsprings
-
-        return best
+        best = self._rank(line_ups, max_price=price)[:1]
+        self.history.append(best[0].points)
+        return best[0]
