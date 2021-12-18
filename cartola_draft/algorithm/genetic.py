@@ -16,10 +16,10 @@ class Genetic(BaseAlgorithm):
         self,
         players: Sequence[Player],
         n_generations: int = 100,
-        n_individuals: int = 100,
-        tournament_size: int = 50,
-        n_tournament_winners: int = 25,
-        max_n_mutations: int = 4,
+        n_individuals: int = 127,
+        tournament_size: int = 58,
+        n_tournament_winners: int = 6,
+        max_n_mutations: int = 1,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(players)
