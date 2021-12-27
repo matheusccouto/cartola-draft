@@ -1,5 +1,5 @@
 optuna
 numpy
-seaborn
 pandas
 plotly
+num2word

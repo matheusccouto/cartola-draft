@@ -19,6 +19,14 @@ SCHEMES_COUNTING = {
         "forward": 2,
         "coach": 1,
     },
+    433: {
+        "goalkeeper": 1,
+        "fullback": 2,
+        "defender": 2,
+        "midfielder": 3,
+        "forward": 3,
+        "coach": 1,
+    },
     352: {
         "goalkeeper": 1,
         "fullback": 0,

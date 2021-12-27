@@ -1,9 +1,17 @@
 """Cartola FC line-up draft."""
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Sequence
 
 POSITIONS = ["goalkeeper", "fullback", "defender", "midfielder", "forward", "coach"]
+
+
+def players_by_position(players: Sequence["Player"]):
+    """Organize players by position."""
+    return {
+        pos: [player for player in players if player.position == pos]
+        for pos in POSITIONS
+    }
 
 
 @dataclass
@@ -76,10 +84,7 @@ class LineUp:
     @property
     def players_by_position(self) -> Dict[str, List[Player]]:
         """Get line-up players by position."""
-        return {
-            pos: [player for player in self.players if player.position == pos]
-            for pos in POSITIONS
-        }
+        return playes_by_position(self.players)
 
     @property
     def points(self):

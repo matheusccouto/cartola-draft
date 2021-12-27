@@ -4,7 +4,7 @@ import random
 from typing import List, Sequence
 
 from . import BaseAlgorithm, DraftError
-from .. import Player, Scheme, LineUp
+from .. import Player, Scheme, LineUp, players_by_position
 
 
 class Genetic(BaseAlgorithm):
@@ -15,10 +15,10 @@ class Genetic(BaseAlgorithm):
     def __init__(
         self,
         players: Sequence[Player],
-        n_generations: int = 100,
-        n_individuals: int = 127,
-        tournament_size: int = 58,
-        n_tournament_winners: int = 6,
+        n_generations: int = 256,
+        n_individuals: int = 256,
+        tournament_size: int = 180,
+        n_tournament_winners: int = 18,
         max_n_mutations: int = 1,
     ):
         # pylint: disable=too-many-arguments
@@ -28,7 +28,7 @@ class Genetic(BaseAlgorithm):
         self.tournament_size = tournament_size
         self.n_tournament_winners = n_tournament_winners
         self.max_n_mutations = max_n_mutations
-        self.players_by_position = self._organize_players_by_position(self.players)
+        self.players_by_position = players_by_position(self.players)
         self.history: List[float] = []
 
     @staticmethod
