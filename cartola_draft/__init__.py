@@ -84,7 +84,7 @@ class LineUp:
     @property
     def players_by_position(self) -> Dict[str, List[Player]]:
         """Get line-up players by position."""
-        return playes_by_position(self.players)
+        return players_by_position(self.players)
 
     @property
     def points(self):
