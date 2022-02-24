@@ -77,7 +77,8 @@ class Genetic(BaseAlgorithm):
         max_price: float,
     ) -> List[LineUp]:
         """Select best line up."""
-        ranked = self._rank(random.sample(line_ups, self.tournament_size), max_price)
+        tournament_size = min(len(line_ups), self.tournament_size)
+        ranked = self._rank(random.sample(line_ups, tournament_size), max_price)
         return ranked[: self.n_tournament_winners]
 
     def _change_random_player(self, line_up: LineUp):
@@ -120,8 +121,9 @@ class Genetic(BaseAlgorithm):
             rest = ranked[1:]
             self.history.append(best[0].points)
 
+            tournament_size = min(len(rest), self.tournament_size)
             selected = self._tournament(
-                random.sample(rest, k=self.tournament_size),
+                random.sample(rest, k=min(len(rest), tournament_size)),
                 max_price=price,
             )
             offsprings = self._create_offsprings(selected, size=self.n_individuals - 1)
