@@ -9,6 +9,7 @@ import azure.functions as func
 from cartola_draft import Player, Scheme
 from cartola_draft.algorithm import DraftError
 from cartola_draft.algorithm.greedy import Greedy
+from cartola_draft.algorithm.genetic import Genetic
 
 
 def parse_scheme(scheme: Dict[str, int]) -> Scheme:
@@ -23,6 +24,8 @@ def parse_algorithm(name: str) -> Callable:
     """Parse algorithm argument."""
     if "greedy" in name.lower():
         return Greedy
+    if "genetic" in name.lower():
+        return Genetic
     raise ValueError(f"{name} is not a valid algorithm")
 
 
