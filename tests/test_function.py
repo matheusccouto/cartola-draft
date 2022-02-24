@@ -7,6 +7,7 @@ import pytest
 import function
 from cartola_draft import Player, Scheme
 from cartola_draft.algorithm.greedy import Greedy
+from cartola_draft.algorithm.genetic import Genetic
 from . import helper
 
 
@@ -43,8 +44,9 @@ class TestAlgorithm:
     def test_genetic():
         """Test parsing genetic algorithm."""
         for name in ["Genetic", "genetic", "GENETIC", "GeNeTic", "genetic algorithm"]:
-            with pytest.raises(ValueError):
-                function.parse_algorithm(name)
+            # Create instance.
+            algo = function.parse_algorithm(name)(helper.load_players())
+            assert isinstance(algo, Genetic)
 
     @staticmethod
     def test_strange_name():
@@ -80,34 +82,3 @@ class TestPlayers:
         players[0]["extra"] = 0.0  # Add the key 'extra' to a single dict
         with pytest.raises(TypeError):
             function.parse_players(players)
-
-
-# class TestLambdaFunction:
-#     """Test AWS lambda function."""
-
-#     # pylint: disable=too-few-public-methods
-
-#     @staticmethod
-#     def _test(event=None, context=None):
-#         """General testig."""
-#         res = function.main(event=event, context=context)
-#         # Read JSON
-#         res_body = json.loads(res["body"])
-#         # Assert that status ig good.
-#         assert res["statusCode"] == 200
-#         # Make sure the reutn has the correct length.
-#         assert len(res_body) == 12
-#         # Make sure it has the right scheme.
-#         event_body = json.loads(event["body"])
-#         for pos, amount in event_body["scheme"].items():
-#             players_from_pos = [item for item in res_body if item["position"] == pos]
-#             assert len(players_from_pos) == amount
-
-#     def test_greedy(self):
-#         """Test draft using greedy algorithm."""
-#         body = {
-#             "scheme": helper.SCHEMES_COUNTING[442],
-#             "players": helper.load_players_dict(),
-#             "algorithm": "greedy",
-#         }
-#         self._test(event={"body": json.dumps(body)})
