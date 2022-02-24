@@ -60,9 +60,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # Draft line-up.
     try:
         line_up = algo.draft(price, scheme)
-    except DraftError:
+    except DraftError as error:
         return func.HttpResponse(
-            "Oops, something went wrong while drafting.",
+            str(error),
             status_code=400,
         )
 
