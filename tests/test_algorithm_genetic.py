@@ -10,7 +10,7 @@ from cartola_draft.algorithm import DraftError
 from cartola_draft.algorithm.genetic import Genetic
 from . import helper
 
-MAX_EXEC_TIME = 5  # seconds
+MAX_EXEC_TIME = 10  # seconds
 SCHEMES = {442: Scheme(helper.SCHEMES_COUNTING[442])}
 
 
