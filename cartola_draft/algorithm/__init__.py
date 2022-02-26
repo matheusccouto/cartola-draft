@@ -21,5 +21,5 @@ class BaseAlgorithm(abc.ABC):
         self.players = players
 
     @abc.abstractmethod
-    def draft(self, price: float, scheme: Scheme) -> LineUp:
+    def draft(self, price: float, scheme: Scheme, max_players_per_club: int) -> LineUp:
         """Draft players following an specified scheme."""

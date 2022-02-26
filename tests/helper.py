@@ -109,6 +109,22 @@ def get_random_players(amount: int, position: str) -> List[draft.Player]:
     return [random.choice(load_players_by_position()[position]) for _ in range(amount)]
 
 
+def get_random_players_from_club(
+    amount: int,
+    position: str,
+    club: int,
+) -> List[draft.Player]:
+    """Get some random players."""
+    players = []
+    pick = -1
+    for _ in range(amount):
+        while pick != club:
+            player = random.choice(load_players_by_position()[position])
+            pick = player.club
+        players.append(player)
+    return players
+
+
 def get_random_players_with_scheme(scheme: draft.Scheme) -> List[draft.Player]:
     """Construct a list random players following a scheme."""
     return [

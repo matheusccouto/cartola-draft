@@ -15,7 +15,7 @@ class Greedy(BaseAlgorithm):
         super().__init__(players)
         self.players = sorted(players, key=lambda player: player.points, reverse=True)
 
-    def draft(self, price: float, scheme: Scheme) -> LineUp:
+    def draft(self, price: float, scheme: Scheme, max_players_per_club: int) -> LineUp:
         """Draft players following an specified scheme."""
         # Make a copy.
         players = list(self.players)
@@ -30,6 +30,11 @@ class Greedy(BaseAlgorithm):
             if line_up.missing(player.position) and player.price <= price:
                 line_up.add_player(player)
                 price -= player.price
+
+                # If the addition breaks the max players per club rule, undo it.
+                if max(line_up.players_per_club.values()) > max_players_per_club:
+                    line_up.remove_player(player)
+                    price += player.price
 
             # Check if the team is ready.
             if line_up.is_valid():

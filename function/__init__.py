@@ -35,10 +35,17 @@ def parse_players(players: List[Dict[str, Any]]) -> List[Player]:
 
 
 def parse_price(price: float) -> float:
-    """Parse price."""
+    """Parse price argument."""
     if price <= 0:
-        raise ValueError("Price should be positve")
+        raise ValueError("Price should be positive")
     return price
+
+
+def parse_max_players_per_club(max_players_per_club: float) -> float:
+    """Parse min_clubs argument."""
+    if max_players_per_club > 0:
+        raise ValueError("Max players per club should be greater than zero.")
+    return max_players_per_club
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -53,13 +60,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     algo_class = parse_algorithm(args["algorithm"])
     players = parse_players(args["players"])
     price = parse_price(args["price"])
+    max_players_per_club = parse_max_players_per_club(args["max_players_per_club"])
 
     # Create algorithm instance.
     algo = algo_class(players)
 
     # Draft line-up.
     try:
-        line_up = algo.draft(price, scheme)
+        line_up = algo.draft(price, scheme, max_players_per_club)
     except DraftError as error:
         return func.HttpResponse(
             str(error),

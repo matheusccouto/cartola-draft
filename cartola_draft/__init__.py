@@ -104,6 +104,11 @@ class LineUp:
         """Get amount of different clubs in the line-up."""
         return len({player.club for player in self.players})
 
+    @property
+    def players_per_club(self):
+        """Get players per club."""
+        return {player.club: self.players.count(player) for player in self.players}
+
     def add_player(self, player: Player):
         """Add player to the line-up."""
         self.players.append(player)

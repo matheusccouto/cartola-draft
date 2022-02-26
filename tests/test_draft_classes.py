@@ -53,7 +53,7 @@ class TestLineUp:
             # Create line up object.
             line_up = draft.LineUp(scheme, players)
 
-            # Calculate the price sum and compare with the property.
+            # Calculate the clubs count and compare with the property.
             clubs = len({player.club for player in players})
             assert line_up.clubs == clubs
 
@@ -139,6 +139,26 @@ class TestLineUp:
         # Check if inner objects are dict.
         for obj in line_up_list:
             assert isinstance(obj, dict)
+
+    @staticmethod
+    def test_players_per_club():
+        """Test counting clubs."""
+        # Create line up object.
+        scheme = draft.Scheme(helper.SCHEMES_COUNTING[442])
+        positions = (
+            helper.get_random_players_from_club(1, "goalkeeper", 262),
+            helper.get_random_players_from_club(2, "defender", 264),
+            helper.get_random_players_from_club(2, "fullback", 266),
+            helper.get_random_players_from_club(4, "midfielder", 275),
+            helper.get_random_players_from_club(2, "forward", 276),
+            helper.get_random_players_from_club(1, "coach", 277),
+        )
+        players = []
+        for position in positions:
+            players += position
+
+        line_up = draft.LineUp(scheme, players)
+        assert max(line_up.players_per_club.values()) == 4
 
 
 class TestScheme:

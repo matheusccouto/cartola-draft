@@ -55,30 +55,49 @@ class Genetic(BaseAlgorithm):
         raise DraftError("There are not enough players to form a line-up.")
 
     @staticmethod
-    def _calculate_fitness(line_up: LineUp, max_price: float) -> float:
+    def _calculate_fitness(
+        line_up: LineUp,
+        max_price: float,
+        max_players_per_club: int,
+    ) -> float:
         """Calculate fitness metric. The greater the better"""
         if line_up.price > max_price:
             return max_price - line_up.price
+        if max(line_up.players_per_club.values()) > max_players_per_club:
+            return 0
         return line_up.points
 
-    def _rank(self, line_ups: Sequence[LineUp], max_price: float) -> List[LineUp]:
+    def _rank(
+        self,
+        line_ups: Sequence[LineUp],
+        max_price: float,
+        max_players_per_club: int,
+    ) -> List[LineUp]:
         """Rank line ups based on the fitness."""
-        return list(
-            sorted(
-                line_ups,
-                key=lambda x: self._calculate_fitness(x, max_price=max_price),
-                reverse=True,
-            )
+        iterable = sorted(
+            line_ups,
+            key=lambda x: self._calculate_fitness(
+                x,
+                max_price=max_price,
+                max_players_per_club=max_players_per_club,
+            ),
+            reverse=True,
         )
+        return list(iterable)
 
     def _tournament(
         self,
         line_ups: Sequence[LineUp],
         max_price: float,
+        max_players_per_club: int,
     ) -> List[LineUp]:
         """Select best line up."""
         tournament_size = min(len(line_ups), self.tournament_size)
-        ranked = self._rank(random.sample(line_ups, tournament_size), max_price)
+        ranked = self._rank(
+            random.sample(line_ups, tournament_size),
+            max_price=max_price,
+            max_players_per_club=max_players_per_club,
+        )
         return ranked[: self.n_tournament_winners]
 
     def _change_random_player(self, line_up: LineUp):
@@ -107,7 +126,7 @@ class Genetic(BaseAlgorithm):
 
         return offsprings
 
-    def draft(self, price: float, scheme: Scheme) -> LineUp:
+    def draft(self, price: float, scheme: Scheme, max_players_per_club: int) -> LineUp:
         """Draft players following an specified scheme."""
         line_ups = [
             self._create_random_line_up(self.players, scheme)
@@ -116,7 +135,11 @@ class Genetic(BaseAlgorithm):
 
         for _ in range(self.n_generations):
 
-            ranked = self._rank(line_ups, max_price=price)
+            ranked = self._rank(
+                line_ups,
+                max_price=price,
+                max_players_per_club=max_players_per_club,
+            )
             best = ranked[:1]
             rest = ranked[1:]
             self.history.append(best[0].points)
@@ -125,10 +148,15 @@ class Genetic(BaseAlgorithm):
             selected = self._tournament(
                 random.sample(rest, k=min(len(rest), tournament_size)),
                 max_price=price,
+                max_players_per_club=max_players_per_club,
             )
             offsprings = self._create_offsprings(selected, size=self.n_individuals - 1)
             line_ups = best + offsprings
 
-        best = self._rank(line_ups, max_price=price)[:1]
+        best = self._rank(
+            line_ups,
+            max_price=price,
+            max_players_per_club=max_players_per_club,
+        )[:1]
         self.history.append(best[0].points)
         return best[0]
