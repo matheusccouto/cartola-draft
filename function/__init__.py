@@ -44,7 +44,7 @@ def parse_price(price: float) -> float:
 def parse_max_players_per_club(max_players_per_club: float) -> float:
     """Parse min_clubs argument."""
     max_players_per_club = int(max_players_per_club)
-    if max_players_per_club > 0:
+    if max_players_per_club < 1:
         raise ValueError("Max players per club should be greater than zero.")
     return max_players_per_club
 
