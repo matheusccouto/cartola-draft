@@ -29,7 +29,7 @@ class TestTypicalDraft:
 
     def test_max_players_per_club(self):
         """Test if max players per club is respected."""
-        line_up = self.algo.draft(100, SCHEMES[352], 4)
+        line_up = self.algo.draft(100, SCHEMES[442], 4)
         assert max(line_up.players_per_club.values()) <= 4
 
     def test_speed(self):
