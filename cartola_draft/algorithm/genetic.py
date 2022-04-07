@@ -4,7 +4,7 @@ import random
 from typing import List, Sequence
 
 from . import BaseAlgorithm, DraftError
-from .. import Player, Scheme, LineUp, players_by_position
+from .. import Player, Scheme, LineUp
 
 
 class Genetic(BaseAlgorithm):
@@ -28,7 +28,6 @@ class Genetic(BaseAlgorithm):
         self.tournament_size = tournament_size
         self.n_tournament_winners = n_tournament_winners
         self.max_n_mutations = max_n_mutations
-        self.players_by_position = players_by_position(self.players)
         self.history: List[float] = []
 
     @staticmethod
@@ -157,6 +156,7 @@ class Genetic(BaseAlgorithm):
             line_ups,
             max_price=price,
             max_players_per_club=max_players_per_club,
-        )[:1]
-        self.history.append(best[0].points)
-        return best[0]
+        )[0]
+        self.history.append(best.points)
+        best.bench = self._draft_bench(best)
+        return best

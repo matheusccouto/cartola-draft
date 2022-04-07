@@ -75,4 +75,5 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             status_code=400,
         )
 
-    return func.HttpResponse(json.dumps(line_up.players, default=vars), status_code=200)
+    body = dict(players=line_up.players, bench=line_up.bench)
+    return func.HttpResponse(json.dumps(body, default=vars), status_code=200)

@@ -11,7 +11,10 @@ from cartola_draft.algorithm.genetic import Genetic
 from . import helper
 
 MAX_EXEC_TIME = 10  # seconds
-SCHEMES = {442: Scheme(helper.SCHEMES_COUNTING[442])}
+SCHEMES = {
+    442: Scheme(helper.SCHEMES_COUNTING[442]),
+    352: Scheme(helper.SCHEMES_COUNTING[352]),
+}
 
 
 class TestTypicalDraft:
@@ -38,6 +41,26 @@ class TestTypicalDraft:
         times = timeit.timeit(lambda: self.algo.draft(100, SCHEMES[442], 12), number=5)
         assert times < MAX_EXEC_TIME * 5
 
+    def test_bench_amount(self):
+        """Test if bench was drafted correctly."""
+        line_up = self.algo.draft(100, SCHEMES[442], 3)
+        assert len(line_up.bench) == 5
+        assert len({p.position for p in line_up.bench}) == 5
+
+    def test_bench_amount_when_position_does_not_exist(self):
+        """Test if bench was drafted correctly when a position does not exist."""
+        line_up = self.algo.draft(100, SCHEMES[352], 3)
+        assert len(line_up.bench) == 4
+        assert len({p.position for p in line_up.bench}) == 4
+
+    def test_bench_prices(self):
+        """Test if bench prices are lower than startes."""
+        line_up = self.algo.draft(100, SCHEMES[442], 3)
+        for player in line_up.bench:
+            for pos, starters in line_up.players_by_position.items():
+                if pos == player.position:
+                    for starter in starters:
+                        assert player.price < starter.price
 
 class TestExtremeCases:
     """Test exceptions."""

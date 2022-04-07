@@ -1,7 +1,7 @@
 """Cartola FC line-up draft."""
 
 from dataclasses import dataclass
-from typing import Dict, List, Sequence
+from typing import Dict, List, Optional, Sequence
 
 POSITIONS = ["goalkeeper", "fullback", "defender", "midfielder", "forward", "coach"]
 
@@ -64,6 +64,11 @@ class LineUp:
 
     scheme: Scheme
     players: List[Player]
+    bench: Optional[List[Player]] = None
+
+    def __post_init__(self):
+        if self.bench is None:
+            self.bench = [None]
 
     def __len__(self):
         return len(self.players)
