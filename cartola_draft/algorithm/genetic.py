@@ -156,7 +156,7 @@ class Genetic(BaseAlgorithm):
             line_ups,
             max_price=price,
             max_players_per_club=max_players_per_club,
-        )[0]
-        self.history.append(best.points)
-        best.bench = self._draft_bench(best)
-        return best
+        )[:1]
+        self.history.append(best[0].points)
+        best[0].bench = self._draft_bench(best[0])
+        return best[0]

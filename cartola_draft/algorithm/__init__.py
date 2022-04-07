@@ -1,7 +1,7 @@
 """Cartola FC optimization algorithms."""
 
 import abc
-from typing import Sequence
+from typing import Sequence, List
 
 from .. import Player, Scheme, LineUp, players_by_position
 
@@ -21,7 +21,7 @@ class BaseAlgorithm(abc.ABC):
         self.players = players
         self.players_by_position = players_by_position(self.players)
 
-    def _draft_bench(self, line_up: LineUp) -> Sequence[Player]:
+    def _draft_bench(self, line_up: LineUp) -> List[Player]:
         """Draft players for the bench of a given line up."""
         bench = []
         for pos, count in line_up.scheme.items():
