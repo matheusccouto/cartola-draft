@@ -30,6 +30,8 @@ class BaseAlgorithm(abc.ABC):
             if count > 0:
                 price = min([p.price for p in line_up.players_by_position[pos]])
                 players = [p for p in self.players_by_position[pos] if p.price < price]
+                if len(players) == 0:
+                    continue
                 player = sorted(players, key=lambda p: p.points)[-1]
                 bench.append(player)
         return bench
