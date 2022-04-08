@@ -27,6 +27,14 @@ SCHEMES_COUNTING = {
         "forward": 3,
         "coach": 1,
     },
+    "433x": {
+        "goalkeeper": 1,
+        "fullback": 2,
+        "defender": 2,
+        "midfielder": 3,
+        "forward": 3,
+        "coach": 0,
+    },
     352: {
         "goalkeeper": 1,
         "fullback": 0,
@@ -46,14 +54,6 @@ SCHEMES_COUNTING = {
 }
 
 INVALID_SCHEMES_COUNTING = {
-    442: {  # No coach
-        "goalkeeper": 1,
-        "fullback": 2,
-        "defender": 2,
-        "midfielder": 4,
-        "forward": 2,
-        "coach": 0,
-    },
     362: {  # Too many midfielders
         "goalkeeper": 1,
         "fullback": 0,

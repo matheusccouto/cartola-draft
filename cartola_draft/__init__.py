@@ -55,7 +55,9 @@ class Scheme:
 
     def is_valid(self):
         """Check if scheme is valid."""
-        return sum(self.positions.values()) == 12
+        players = sum([count for pos, count in self.positions.items() if pos != "coach"])
+        coach = self.positions["coach"]
+        return players == 11 and coach <= 1
 
 
 @dataclass
