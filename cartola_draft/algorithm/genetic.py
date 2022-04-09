@@ -19,7 +19,7 @@ class Genetic(BaseAlgorithm):
         n_individuals: int = 100,
         tournament_size: int = 100,
         n_tournament_winners: int = 5,
-        max_n_mutations: int = 1,
+        max_n_mutations: int = 3,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(players)
